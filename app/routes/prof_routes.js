@@ -47,7 +47,6 @@ module.exports = function (app) {
 
     app.post('/a', bodyParser, (request, response) => {
         let body = request.body;
-        //console.log(request);
         const {Client} = require('pg');
 
         const db = new Client({
@@ -64,11 +63,10 @@ module.exports = function (app) {
         db.query(sql, (err,result) => {
             if (err)
                 throw new Error(err);
-            //console.log(err);
-            //идея - если нет ошибки что то делать на странице-нужен лисеер какой нибудь?
+
             db.end();
         });
-        console.log("end");
+
         response.send('успешно отправленно');
     });
     app.get('/a', (request, response) => {
@@ -90,16 +88,14 @@ module.exports = function (app) {
             if (err)
                 throw new Error(err);
              res = result.rows;
-             //console.log(res)
+
              db.end();
              response.setHeader("Content-Type", "application/json");
              response.send(JSON.stringify(res));
 
         });
 
-        //console.log("nnnnnnnnnooooooo");
-        //response.setHeader("Content-Type", "application/json");
-        //response.send(JSON.stringify(res));
+
     })
     
 
