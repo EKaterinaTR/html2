@@ -1,3 +1,4 @@
+bodyParser = require('body-parser').json();
 module.exports = function (app) {
     app.get('/prof', (request, response) => {
         var result = {
@@ -39,6 +40,68 @@ module.exports = function (app) {
 
 
         };
+
+        response.setHeader("Content-Type", "application/json");
         response.send(JSON.stringify(result));
     });
+
+    app.post('/a', bodyParser, (request, response) => {
+        let body = request.body;
+        //console.log(request);
+        const {Client} = require('pg');
+
+        const db = new Client({
+            user: 'postgres',
+            host: 'localhost',
+            database: 'Applications',
+            password: 'pos3ril10',
+            port: 5432
+        });
+        let sql = 'Insert into apps (text) VALUES (\''+body["textOfApplication"] +'\')';
+
+        db.connect();
+
+        db.query(sql, (err,result) => {
+            if (err)
+                throw new Error(err);
+            //console.log(err);
+            //идея - если нет ошибки что то делать на странице-нужен лисеер какой нибудь?
+            db.end();
+        });
+        console.log("end");
+        response.send('успешно отправленно');
+    });
+    app.get('/a', (request, response) => {
+        let res = "";
+        const {Client} = require('pg');
+
+        const db = new Client({
+            user: 'postgres',
+            host: 'localhost',
+            database: 'Applications',
+            password: 'pos3ril10',
+            port: 5432
+        });
+        let sql = 'select * from apps';
+
+        db.connect();
+
+        db.query(sql, (err,result,) => {
+            if (err)
+                throw new Error(err);
+             res = result.rows;
+             //console.log(res)
+             db.end();
+             response.setHeader("Content-Type", "application/json");
+             response.send(JSON.stringify(res));
+
+        });
+
+        //console.log("nnnnnnnnnooooooo");
+        //response.setHeader("Content-Type", "application/json");
+        //response.send(JSON.stringify(res));
+    })
+    
+
+
 };
