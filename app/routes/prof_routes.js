@@ -53,7 +53,7 @@ module.exports = function (app) {
             user: 'postgres',
             host: 'localhost',
             database: 'Applications',
-            password: 'pos3ril10',
+            password: '',
             port: 5432
         });
         let sql = 'Insert into apps (text) VALUES (\''+body["textOfApplication"] +'\')';
@@ -77,7 +77,7 @@ module.exports = function (app) {
             user: 'postgres',
             host: 'localhost',
             database: 'Applications',
-            password: 'pos3ril10',
+            password: '',
             port: 5432
         });
         let sql = 'select * from apps';
